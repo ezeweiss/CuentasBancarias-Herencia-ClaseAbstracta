@@ -4,12 +4,12 @@ public class CuentaCorriente extends Cuenta{
 
 	private Double saldoDescubierto = 200.0;
 	
-	public CuentaCorriente(String nombreCliente, String apellidoCliente, Integer dni, Double saldo) {
-		super(nombreCliente, apellidoCliente, dni, saldo);
+	public CuentaCorriente(String nombreCliente, String apellidoCliente, Integer cbu, Double saldo) {
+		super(nombreCliente, apellidoCliente, cbu, saldo);
 	}
 	
 	@Override
-	public void extraer(Double extraccionDinero) {
+	public void extraer(Double extraccionDinero) throws MontoInvalidoException, MontoInsuficienteException {
 		Double descubiertoDisponible = 0.0;
 		Double descubiertoUsado = 0.0;
 		Double totalDeuda = 0.0;
@@ -25,15 +25,22 @@ public class CuentaCorriente extends Cuenta{
 			totalDeuda = descubiertoUsado + (descubiertoUsado * 0.05);
 		}
 		
-		else {
-			System.out.println("Se supero el limite de descubierto y saldo");
+		 if(extraccionDinero < 0) {
+			throw new MontoInvalidoException();
 		}
+		
+		 if( extraccionDinero > this.saldo + this.saldoDescubierto) {
+				throw new MontoInsuficienteException();
+			}
+		
+	
+
+
 	}
 
 	@Override
-	public void depositar(Double ingresoDinero) {
-		this.saldo = this.saldo + ingresoDinero;
-		
+	public int compareTo(Cuenta cbu) {
+		return (this.getCbu().compareTo(cbu.getCbu()));
 	}
 
 }

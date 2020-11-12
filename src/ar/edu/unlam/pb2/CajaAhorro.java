@@ -4,27 +4,37 @@ public class CajaAhorro extends Cuenta{
 
 	private Integer cantidadExtracciones = 0;
 	
-	public CajaAhorro(String nombreCliente, String apellidoCliente, Integer dni, Double saldo) {
-		super(nombreCliente, apellidoCliente, dni, saldo);
+	public CajaAhorro(String nombreCliente, String apellidoCliente, Integer cbu, Double saldo) {
+		super(nombreCliente, apellidoCliente,cbu, saldo);
 	}
 	
 	
-	public void extraer(Double extraccionDinero) {
+	public void extraer(Double extraccionDinero) throws MontoInvalidoException, MontoInsuficienteException {
 		
 		this.cantidadExtracciones = this.cantidadExtracciones + 1;
 		if(this.cantidadExtracciones > 5) {
 			this.saldo = this.saldo - extraccionDinero - 6.0;
 		}
-		else {
+		if(this.cantidadExtracciones <= 5) {
 			this.saldo = this.saldo - extraccionDinero;
 		}
+		
+		if(this.saldo - extraccionDinero > this.saldo) {
+			throw new MontoInsuficienteException();
+		}
+		
+		if(extraccionDinero < 0) {
+			throw new MontoInvalidoException();
+		}
+		
+		
 	}
 
 
 	@Override
-	public void depositar(Double ingresoDinero) {
-		this.saldo = this.saldo + ingresoDinero;
-		
+	public int compareTo(Cuenta cbu) {
+		return (this.getCbu().compareTo(cbu.getCbu()));
+	
 	}
 
 
